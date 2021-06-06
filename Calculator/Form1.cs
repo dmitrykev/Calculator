@@ -12,7 +12,7 @@ namespace Calculator
 {
     public partial class Form1 : Form
     {
-        double plus, minus, multiply, division, equally, number;
+        double plus, minus, multiply, division, equally;
         
         public Form1()
         {
@@ -124,16 +124,36 @@ namespace Calculator
 
         private void button_plus_Click(object sender, EventArgs e)
         {
-            plus += Convert.ToDouble(label.Text);
+            if (label.Text != "")
+            {
+                plus += Convert.ToDouble(label.Text);
+            }
+            int trigger = label2.Text.IndexOf('=', 0, label2.Text.Length);
+            if (trigger != -1)
+            {
+                label2.Text = "";
+            }
+            int trigger2 = label2.Text.LastIndexOf('+');
+            label2.Text += label.Text;
+            if (trigger2 == -1)
+            {
+                label2.Text += " + ";
+            }
             label.Text = "";
         }
 
         private void button_equally_Click(object sender, EventArgs e)
         {
+            label2.Text += label.Text + " =";
             if(plus != 0)
             {
-                equally = Convert.ToDouble(label.Text);
+                if (label.Text != "")
+                {
+                    equally = Convert.ToDouble(label.Text);
+                }
                 label.Text = Convert.ToString(plus + equally);
+                
+                
             }
             else if(minus != 0)
             {
@@ -150,6 +170,7 @@ namespace Calculator
                 equally = Convert.ToDouble(label.Text);
                 label.Text = Convert.ToString(division / equally);
             }
+            plus = minus = division = equally = multiply = 0;
         }
 
         private void button_clear_Click(object sender, EventArgs e)
